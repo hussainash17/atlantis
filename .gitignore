@@ -1,0 +1,41 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+atlantis-web/node_modules
+atlantis-web/.pnp
+atlantis-web/.pnp.*
+atlantis-web/.yarn/*
+!atlantis-web/.yarn/patches
+!atlantis-web/.yarn/plugins
+!atlantis-web/.yarn/releases
+!atlantis-web/.yarn/versions
+
+# testing
+atlantis-web/coverage
+
+# next.js
+atlantis-web/.next/
+atlantis-web/out/
+
+# production
+atlantis-web/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+atlantis-web/.vercel
+
+# typescript
+*.tsbuildinfo
+atlantis-web/next-env.d.ts
