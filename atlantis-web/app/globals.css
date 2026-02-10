@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* Atlantis Design System - Deep Ocean Clarity */
+@theme {
+  /* Primary Colors (The Depths) */
+  --color-navy-900: #0A192F;
+  --color-navy-800: #112240;
+  --color-navy-700: #233554;
+
+  /* Accent Colors (Bioluminescence) */
+  --color-cyan-500: #00F0FF;
+  --color-cyan-400: #00ABB3;
+  --color-cyan-300: #5CFAFF;
+  --color-cyan-900: rgba(0, 171, 179, 0.2);
+
+  /* Semantic Colors */
+  --color-emerald-500: #10B981;
+  --color-emerald-400: #34D399;
+  --color-emerald-900: rgba(16, 185, 129, 0.2);
+
+  --color-orange-500: #F97316;
+  --color-orange-400: #FB923C;
+  --color-orange-900: rgba(249, 115, 22, 0.2);
+
+  --color-slate-400: #94A3B8;
+  --color-slate-300: #CBD5E1;
+  --color-slate-200: #E2E8F0;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Outfit', system-ui, sans-serif;
+
+  /* Shadows */
+  --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.4);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+  /* Border Radius */
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+}
+
+/* Base Styles */
+body {
+  background: linear-gradient(180deg, var(--color-navy-900) 0%, #050D1A 100%);
+  color: white;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Glass Panel Effect */
+.glass-panel {
+  background: rgba(17, 34, 64, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+}
+
+/* Text Glow Effect */
+.text-glow {
+  text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+}
+
+/* Hide Scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Selection Color */
+::selection {
+  background: rgba(0, 240, 255, 0.3);
+}
