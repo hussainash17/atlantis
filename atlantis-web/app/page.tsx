@@ -6,6 +6,7 @@ import { mockPortfolio, mockInsights } from '@/data/mock'
 import { Bell, UserCircle, TrendingUp, TrendingDown } from 'lucide-react'
 import { Card } from '@/components/atoms/base'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const marketData = [
   { name: 'DSEX', value: '5,847.32', change: 1.24, up: true },
@@ -15,6 +16,8 @@ const marketData = [
 ]
 
 export default function Dashboard() {
+  const router = useRouter()
+
   return (
     <main className="min-h-screen pb-24">
       {/* Header */}
@@ -41,7 +44,7 @@ export default function Dashboard() {
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 md:px-6 py-6 space-y-8">
         {/* Hero Wallet */}
-        <HeroWallet data={mockPortfolio} />
+        <HeroWallet data={mockPortfolio} onAddMoney={() => router.push('/wallet')} />
 
         {/* AI Insights */}
         <InsightRail insights={mockInsights} />

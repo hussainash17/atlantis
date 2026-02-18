@@ -1,10 +1,15 @@
 'use client'
 
-import { Card, Button, Badge } from '../atoms/base'
+import { Card, Button } from '../atoms/base'
 import { Wallet, TrendingUp, Plus, Info } from 'lucide-react'
 import { PortfolioData } from '@/data/mock'
 
-export const HeroWallet = ({ data }: { data: PortfolioData }) => {
+interface HeroWalletProps {
+    data: PortfolioData
+    onAddMoney?: () => void
+}
+
+export const HeroWallet = ({ data, onAddMoney }: HeroWalletProps) => {
     return (
         <Card variant="gradient" className="relative overflow-hidden p-6 md:p-8">
             {/* Decorative Glow Elements */}
@@ -52,7 +57,7 @@ export const HeroWallet = ({ data }: { data: PortfolioData }) => {
                         </div>
                     </div>
 
-                    <Button variant="primary" size="md" className="w-full md:w-auto">
+                    <Button variant="primary" size="md" className="w-full md:w-auto" onClick={onAddMoney}>
                         <Plus className="w-5 h-5 mr-2" />
                         Add Money
                     </Button>

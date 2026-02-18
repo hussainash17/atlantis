@@ -369,57 +369,6 @@ export const calculateAllocation = (holdings: Holding[]): AssetAllocation[] => {
     }))
 }
 
-// Export original mock data (for dashboard)
-export interface PortfolioData {
-    balance: number
-    invested: number
-    cash: number
-    dailyChange: number
-    dailyChangePercent: number
-}
-
-export interface Insight {
-    id: string
-    type: 'opportunity' | 'education' | 'risk'
-    title: string
-    summary: string
-    confidence: number
-    yield?: number
-}
-
-export const mockPortfolio: PortfolioData = {
-    balance: 292090,
-    invested: 274540,
-    cash: 17550,
-    dailyChange: 1850,
-    dailyChangePercent: 0.65,
-}
-
-export const mockInsights: Insight[] = [
-    {
-        id: '1',
-        type: 'opportunity',
-        title: 'Grameenphone Bond',
-        summary: 'High yield corporate bond available for 7 days.',
-        confidence: 95,
-        yield: 9.2,
-    },
-    {
-        id: '2',
-        type: 'education',
-        title: 'Why is the market down?',
-        summary: 'Global inflation concerns are impacting DSEX indices.',
-        confidence: 80,
-    },
-    {
-        id: '3',
-        type: 'risk',
-        title: 'Portfolio Alert',
-        summary: 'Your exposure to textile sector is high.',
-        confidence: 88,
-    }
-]
-
 // ===================== WALLET =====================
 
 export interface WalletBalance {
@@ -458,6 +407,57 @@ export const mockWalletBalance: WalletBalance = {
     totalDeposited: 350000,
     totalWithdrawn: 58000,
 }
+
+// Export original mock data (for dashboard)
+export interface PortfolioData {
+    balance: number
+    invested: number
+    cash: number
+    dailyChange: number
+    dailyChangePercent: number
+}
+
+export interface Insight {
+    id: string
+    type: 'opportunity' | 'education' | 'risk'
+    title: string
+    summary: string
+    confidence: number
+    yield?: number
+}
+
+export const mockPortfolio: PortfolioData = {
+    balance: 292090,
+    invested: 274540,
+    cash: mockWalletBalance.available,
+    dailyChange: 1850,
+    dailyChangePercent: 0.65,
+}
+
+export const mockInsights: Insight[] = [
+    {
+        id: '1',
+        type: 'opportunity',
+        title: 'Grameenphone Bond',
+        summary: 'High yield corporate bond available for 7 days.',
+        confidence: 95,
+        yield: 9.2,
+    },
+    {
+        id: '2',
+        type: 'education',
+        title: 'Why is the market down?',
+        summary: 'Global inflation concerns are impacting DSEX indices.',
+        confidence: 80,
+    },
+    {
+        id: '3',
+        type: 'risk',
+        title: 'Portfolio Alert',
+        summary: 'Your exposure to textile sector is high.',
+        confidence: 88,
+    }
+]
 
 export const mockPaymentMethods: PaymentMethod[] = [
     { id: 'pm-1', name: 'bKash', icon: '📱', type: 'mfs' },
