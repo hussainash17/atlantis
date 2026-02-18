@@ -228,6 +228,109 @@ export const mockHoldings: Holding[] = [
     },
 ]
 
+// ===================== USER PROFILE =====================
+
+export interface UserProfile {
+    id: string
+    fullName: string
+    email: string
+    mobile: string
+    dateOfBirth: string
+    address?: string
+    avatarUrl?: string
+    memberSince: string
+    accountTier: 'starter' | 'silver' | 'gold' | 'platinum'
+}
+
+export interface KYCStep {
+    name: string
+    status: 'complete' | 'pending' | 'not_started'
+    completedAt?: string
+}
+
+export interface KYCStatus {
+    overall: 'not_started' | 'pending' | 'verified' | 'rejected'
+    steps: KYCStep[]
+}
+
+export interface RiskProfile {
+    category: 'conservative' | 'balanced' | 'growth'
+    score: number
+    investmentGoal: string
+    incomeRange: string
+    aiExplanation: string
+    lastAssessedAt: string
+}
+
+export interface LinkedBank {
+    id: string
+    bankName: string
+    accountNumber: string
+    isPrimary: boolean
+    status: 'active' | 'inactive'
+}
+
+export interface SecuritySettings {
+    passwordLastChanged: string
+    twoFactorEnabled: boolean
+    notifications: { push: boolean; email: boolean; sms: boolean }
+    language: 'en' | 'bn'
+}
+
+export const mockUserProfile: UserProfile = {
+    id: 'usr-001',
+    fullName: 'Tanvir Ahmed',
+    email: 't****r@gmail.com',
+    mobile: '+880****7821',
+    dateOfBirth: '1994-03-15',
+    memberSince: '2025-09-01',
+    accountTier: 'gold',
+}
+
+export const mockKYCStatus: KYCStatus = {
+    overall: 'verified',
+    steps: [
+        { name: 'Personal Details', status: 'complete', completedAt: '2025-09-01T10:00:00Z' },
+        { name: 'NID Verification', status: 'complete', completedAt: '2025-09-01T10:15:00Z' },
+        { name: 'Selfie Verification', status: 'complete', completedAt: '2025-09-01T10:20:00Z' },
+        { name: 'Bank Account Linked', status: 'complete', completedAt: '2025-09-02T14:30:00Z' },
+    ],
+}
+
+export const mockRiskProfile: RiskProfile = {
+    category: 'balanced',
+    score: 58,
+    investmentGoal: 'Long-term Growth',
+    incomeRange: '৳40,000 – ৳80,000 / month',
+    aiExplanation:
+        'Based on your responses, you have a moderate tolerance for risk. You are comfortable with short-term market fluctuations in exchange for potentially higher long-term returns. We recommend a diversified mix of equities, fixed income, and savings instruments.',
+    lastAssessedAt: '2025-09-01T11:00:00Z',
+}
+
+export const mockLinkedBanks: LinkedBank[] = [
+    {
+        id: 'bnk-1',
+        bankName: 'Dutch Bangla Bank',
+        accountNumber: '****4521',
+        isPrimary: true,
+        status: 'active',
+    },
+    {
+        id: 'bnk-2',
+        bankName: 'BRAC Bank',
+        accountNumber: '****7890',
+        isPrimary: false,
+        status: 'active',
+    },
+]
+
+export const mockSecuritySettings: SecuritySettings = {
+    passwordLastChanged: '2026-01-10T08:00:00Z',
+    twoFactorEnabled: true,
+    notifications: { push: true, email: true, sms: false },
+    language: 'en',
+}
+
 // Calculate portfolio summary
 export const calculatePortfolioSummary = (holdings: Holding[]): PortfolioSummary => {
     const totalValue = holdings.reduce((sum, h) => sum + h.currentValue, 0)
@@ -315,4 +418,195 @@ export const mockInsights: Insight[] = [
         summary: 'Your exposure to textile sector is high.',
         confidence: 88,
     }
+]
+
+// ===================== WALLET =====================
+
+export interface WalletBalance {
+    available: number
+    blocked: number
+    pending: number
+    totalDeposited: number
+    totalWithdrawn: number
+}
+
+export type TransactionType = 'deposit' | 'withdrawal' | 'investment' | 'settlement' | 'fee'
+export type TransactionStatus = 'completed' | 'pending' | 'failed'
+
+export interface Transaction {
+    id: string
+    type: TransactionType
+    title: string
+    description: string
+    amount: number
+    status: TransactionStatus
+    date: string
+    method?: string
+}
+
+export interface PaymentMethod {
+    id: string
+    name: string
+    icon: string
+    type: 'mfs' | 'bank' | 'card'
+}
+
+export const mockWalletBalance: WalletBalance = {
+    available: 17550,
+    blocked: 5000,
+    pending: 2500,
+    totalDeposited: 350000,
+    totalWithdrawn: 58000,
+}
+
+export const mockPaymentMethods: PaymentMethod[] = [
+    { id: 'pm-1', name: 'bKash', icon: '📱', type: 'mfs' },
+    { id: 'pm-2', name: 'Nagad', icon: '💳', type: 'mfs' },
+    { id: 'pm-3', name: 'Bank Transfer', icon: '🏦', type: 'bank' },
+    { id: 'pm-4', name: 'Debit Card', icon: '💎', type: 'card' },
+]
+
+export const mockTransactions: Transaction[] = [
+    {
+        id: 'txn-01',
+        type: 'deposit',
+        title: 'Added Money',
+        description: 'via bKash',
+        amount: 25000,
+        status: 'completed',
+        date: '2026-02-17T14:30:00Z',
+        method: 'bKash',
+    },
+    {
+        id: 'txn-02',
+        type: 'investment',
+        title: 'Invested in Grameenphone Ltd',
+        description: 'Equity purchase — 50 shares',
+        amount: -19000,
+        status: 'completed',
+        date: '2026-02-16T10:15:00Z',
+    },
+    {
+        id: 'txn-03',
+        type: 'deposit',
+        title: 'Added Money',
+        description: 'via Bank Transfer',
+        amount: 50000,
+        status: 'completed',
+        date: '2026-02-15T09:00:00Z',
+        method: 'Bank Transfer',
+    },
+    {
+        id: 'txn-04',
+        type: 'investment',
+        title: 'Invested in 3-Year FDR',
+        description: 'Dutch Bangla Bank — Fixed Deposit',
+        amount: -100000,
+        status: 'completed',
+        date: '2026-02-14T11:30:00Z',
+    },
+    {
+        id: 'txn-05',
+        type: 'settlement',
+        title: 'Settlement — TB Bond 2028',
+        description: 'Bond maturity interest credited',
+        amount: 1250,
+        status: 'completed',
+        date: '2026-02-13T16:00:00Z',
+    },
+    {
+        id: 'txn-06',
+        type: 'withdrawal',
+        title: 'Withdrawal to Bank',
+        description: 'Dutch Bangla Bank ****4521',
+        amount: -15000,
+        status: 'completed',
+        date: '2026-02-12T13:45:00Z',
+        method: 'Bank Transfer',
+    },
+    {
+        id: 'txn-07',
+        type: 'fee',
+        title: 'Platform Fee',
+        description: 'Monthly service charge',
+        amount: -99,
+        status: 'completed',
+        date: '2026-02-10T00:00:00Z',
+    },
+    {
+        id: 'txn-08',
+        type: 'deposit',
+        title: 'Added Money',
+        description: 'via Nagad',
+        amount: 10000,
+        status: 'completed',
+        date: '2026-02-08T17:20:00Z',
+        method: 'Nagad',
+    },
+    {
+        id: 'txn-09',
+        type: 'investment',
+        title: 'Invested in ICB AMCL Growth Fund',
+        description: 'Mutual fund — 500 units',
+        amount: -6250,
+        status: 'completed',
+        date: '2026-02-07T10:00:00Z',
+    },
+    {
+        id: 'txn-10',
+        type: 'settlement',
+        title: 'Settlement — iFarmer Crop',
+        description: 'Return on agri-fintech investment',
+        amount: 1800,
+        status: 'pending',
+        date: '2026-02-06T14:00:00Z',
+    },
+    {
+        id: 'txn-11',
+        type: 'investment',
+        title: 'Invested in Digital Gold',
+        description: '5 grams purchased',
+        amount: -46000,
+        status: 'completed',
+        date: '2026-02-05T12:30:00Z',
+    },
+    {
+        id: 'txn-12',
+        type: 'deposit',
+        title: 'Added Money',
+        description: 'via Debit Card',
+        amount: 100000,
+        status: 'completed',
+        date: '2026-02-03T09:15:00Z',
+        method: 'Debit Card',
+    },
+    {
+        id: 'txn-13',
+        type: 'withdrawal',
+        title: 'Withdrawal to Bank',
+        description: 'BRAC Bank ****7890',
+        amount: -8000,
+        status: 'completed',
+        date: '2026-02-01T11:00:00Z',
+        method: 'Bank Transfer',
+    },
+    {
+        id: 'txn-14',
+        type: 'investment',
+        title: 'Invested in BRAC Bank Ltd',
+        description: 'Equity purchase — 100 shares',
+        amount: -4200,
+        status: 'completed',
+        date: '2026-01-28T10:45:00Z',
+    },
+    {
+        id: 'txn-15',
+        type: 'deposit',
+        title: 'Initial Deposit',
+        description: 'via bKash — Welcome!',
+        amount: 5000,
+        status: 'completed',
+        date: '2025-09-01T12:00:00Z',
+        method: 'bKash',
+    },
 ]

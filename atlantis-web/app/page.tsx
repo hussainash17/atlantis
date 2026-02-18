@@ -31,9 +31,9 @@ export default function Dashboard() {
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full ring-2 ring-navy-900" />
             </button>
-            <button className="p-1 rounded-full ring-2 ring-cyan-500/30 hover:ring-cyan-500/60 transition-all">
+            <Link href="/profile" className="p-1 rounded-full ring-2 ring-cyan-500/30 hover:ring-cyan-500/60 transition-all">
               <UserCircle className="w-8 h-8 text-slate-300" />
-            </button>
+            </Link>
           </div>
         </div>
       </header>
