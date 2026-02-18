@@ -3,12 +3,14 @@
 import { Card, Badge, Button } from '@/components/atoms/base'
 import { AllocationChart } from '@/components/organisms/AllocationChart'
 import { HoldingCard } from '@/components/organisms/HoldingCard'
+import { SellModal } from '@/components/organisms/SellModal'
 import {
     mockHoldings,
     calculatePortfolioSummary,
     calculateAllocation,
     assetClassMeta,
-    AssetClass
+    AssetClass,
+    Holding
 } from '@/data/mock'
 import {
     ArrowLeft,
@@ -29,6 +31,7 @@ export default function PortfolioPage() {
     const [viewMode, setViewMode] = useState<ViewMode>('allocation')
     const [selectedClass, setSelectedClass] = useState<AssetClass | 'all'>('all')
     const [searchQuery, setSearchQuery] = useState('')
+    const [sellHolding, setSellHolding] = useState<Holding | null>(null)
 
     const summary = calculatePortfolioSummary(mockHoldings)
     const allocation = calculateAllocation(mockHoldings)
@@ -168,8 +171,8 @@ export default function PortfolioPage() {
                         <button
                             onClick={() => setSelectedClass('all')}
                             className={`px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${selectedClass === 'all'
-                                    ? 'bg-cyan-500 text-navy-900'
-                                    : 'bg-navy-800 text-slate-400 hover:text-white border border-navy-700'
+                                ? 'bg-cyan-500 text-navy-900'
+                                : 'bg-navy-800 text-slate-400 hover:text-white border border-navy-700'
                                 }`}
                         >
                             All
@@ -184,8 +187,8 @@ export default function PortfolioPage() {
                                     key={key}
                                     onClick={() => setSelectedClass(key)}
                                     className={`px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 ${selectedClass === key
-                                            ? 'bg-cyan-500 text-navy-900'
-                                            : 'bg-navy-800 text-slate-400 hover:text-white border border-navy-700'
+                                        ? 'bg-cyan-500 text-navy-900'
+                                        : 'bg-navy-800 text-slate-400 hover:text-white border border-navy-700'
                                         }`}
                                 >
                                     <span>{meta.icon}</span>
@@ -222,7 +225,7 @@ export default function PortfolioPage() {
                                     </div>
                                     <div className="space-y-3">
                                         {holdings.map(holding => (
-                                            <HoldingCard key={holding.id} holding={holding} />
+                                            <HoldingCard key={holding.id} holding={holding} onSell={setSellHolding} />
                                         ))}
                                     </div>
                                 </div>
@@ -232,7 +235,7 @@ export default function PortfolioPage() {
                         // Flat view for single class
                         <div className="space-y-3">
                             {filteredHoldings.map(holding => (
-                                <HoldingCard key={holding.id} holding={holding} />
+                                <HoldingCard key={holding.id} holding={holding} onSell={setSellHolding} />
                             ))}
                         </div>
                     )}
@@ -244,6 +247,9 @@ export default function PortfolioPage() {
                     )}
                 </div>
             </div>
+            {sellHolding && (
+                <SellModal isOpen={!!sellHolding} onClose={() => setSellHolding(null)} holding={sellHolding} />
+            )}
         </main>
     )
 }

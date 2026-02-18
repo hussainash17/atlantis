@@ -90,8 +90,9 @@ export default function Dashboard() {
         </section>
 
         {/* Quick Actions */}
-        <section className="grid grid-cols-3 gap-3">
+        <section className="grid grid-cols-4 gap-3">
           {[
+            { icon: '🛒', label: 'Invest', href: '/marketplace' },
             { icon: '📊', label: 'Portfolio', href: '/portfolio' },
             { icon: '💳', label: 'Wallet', href: '/wallet' },
             { icon: '📚', label: 'Learn', href: '/learn' },

@@ -6,9 +6,10 @@ import { TrendingUp, TrendingDown, Clock, Percent, ChevronRight } from 'lucide-r
 
 interface HoldingCardProps {
     holding: Holding
+    onSell?: (holding: Holding) => void
 }
 
-export const HoldingCard = ({ holding }: HoldingCardProps) => {
+export const HoldingCard = ({ holding, onSell }: HoldingCardProps) => {
     const isPositive = holding.gain >= 0
     const meta = assetClassMeta[holding.assetClass]
 
@@ -40,9 +41,19 @@ export const HoldingCard = ({ holding }: HoldingCardProps) => {
                         </div>
                     </div>
                 </div>
-                <Badge variant={riskColors[holding.riskLevel]} className="text-[10px]">
-                    {holding.riskLevel}
-                </Badge>
+                <div className="flex items-center gap-2">
+                    <Badge variant={riskColors[holding.riskLevel]} className="text-[10px]">
+                        {holding.riskLevel}
+                    </Badge>
+                    {onSell && (
+                        <button
+                            onClick={(e) => { e.stopPropagation(); onSell(holding) }}
+                            className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-colors"
+                        >
+                            Sell
+                        </button>
+                    )}
+                </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-3">

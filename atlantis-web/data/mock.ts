@@ -610,3 +610,406 @@ export const mockTransactions: Transaction[] = [
         method: 'bKash',
     },
 ]
+
+// ===================== BUY/SELL — INSTRUMENTS & PARTNERS =====================
+
+export interface IntegrationPartner {
+    id: string
+    name: string
+    icon: string
+    type: 'broker' | 'bank' | 'amcf' | 'exchange' | 'fintech'
+    settlementDays: string
+}
+
+export const mockPartners: Record<string, IntegrationPartner> = {
+    lankabangla: { id: 'p-1', name: 'LankaBangla Securities', icon: '🏢', type: 'broker', settlementDays: 'T+2' },
+    bbDealer: { id: 'p-2', name: 'BB Primary Dealer', icon: '🏛️', type: 'bank', settlementDays: 'At Maturity' },
+    dbbl: { id: 'p-3', name: 'Dutch Bangla Bank', icon: '🏦', type: 'bank', settlementDays: '1-3 days' },
+    icb: { id: 'p-4', name: 'ICB Asset Management', icon: '📊', type: 'amcf', settlementDays: 'T+3' },
+    goldExchange: { id: 'p-5', name: 'BD Gold Exchange', icon: '🥇', type: 'exchange', settlementDays: 'Instant' },
+    ifarmer: { id: 'p-6', name: 'iFarmer', icon: '🌾', type: 'fintech', settlementDays: 'At Harvest' },
+    bracBank: { id: 'p-7', name: 'BRAC Bank', icon: '🏦', type: 'bank', settlementDays: '1-3 days' },
+    aims: { id: 'p-8', name: 'AIMS Bangladesh', icon: '📊', type: 'amcf', settlementDays: 'T+3' },
+}
+
+export type AISuitability = 'suitable' | 'caution' | 'not_recommended'
+export type OrderType = 'market' | 'limit'
+
+export interface Instrument {
+    id: string
+    name: string
+    ticker?: string
+    assetClass: AssetClass
+    issuer: string
+    partnerId: string
+    description: string
+    riskLevel: RiskLevel
+    aiScore: number // 0-100
+    aiSuitability: AISuitability
+    aiReason: string
+    minInvestment: number
+    currentPrice: number
+    expectedReturn?: number
+    // Equity specific
+    orderTypes?: OrderType[]
+    lotSize?: number
+    marketCap?: string
+    sector?: string
+    peRatio?: number
+    // Fixed income specific
+    couponRate?: number
+    maturityDate?: string
+    faceValue?: number
+    // Savings specific
+    tenureOptions?: number[] // years
+    interestRate?: number
+    lockInDays?: number
+    // Mutual fund specific
+    navPrice?: number
+    fundType?: string
+    expenseRatio?: number
+    exitLoad?: number // percentage
+    // Gold specific
+    spotPrice?: number // per gram
+    minGrams?: number
+    purity?: string
+    // Agri specific
+    campaignName?: string
+    campaignEndDate?: string
+    harvestDate?: string
+    targetYield?: number
+    funded?: number // percentage
+}
+
+export const mockInstruments: Instrument[] = [
+    // ── EQUITIES ──
+    {
+        id: 'inst-eq-1',
+        name: 'Grameenphone Ltd',
+        ticker: 'GP',
+        assetClass: 'equity',
+        issuer: 'Dhaka Stock Exchange',
+        partnerId: 'lankabangla',
+        description: 'Bangladesh\'s largest telecom operator with 85M+ subscribers, strong cash flows, and consistent dividend payouts.',
+        riskLevel: 'medium',
+        aiScore: 87,
+        aiSuitability: 'suitable',
+        aiReason: 'Strong fundamentals with 8.2% dividend yield. Defensive stock suitable for moderate-risk profiles.',
+        minInvestment: 412,
+        currentPrice: 412,
+        orderTypes: ['market', 'limit'],
+        lotSize: 1,
+        marketCap: '৳556B',
+        sector: 'Telecommunication',
+        peRatio: 12.4,
+        expectedReturn: 12.5,
+    },
+    {
+        id: 'inst-eq-2',
+        name: 'Square Pharmaceuticals',
+        ticker: 'SQURPHARMA',
+        assetClass: 'equity',
+        issuer: 'Dhaka Stock Exchange',
+        partnerId: 'lankabangla',
+        description: 'Leading pharmaceutical company with 18% market share. Export revenue growing at 15% YoY.',
+        riskLevel: 'low',
+        aiScore: 92,
+        aiSuitability: 'suitable',
+        aiReason: 'Best-in-class pharma with export diversification. Low beta suitable for conservative investors.',
+        minInvestment: 218,
+        currentPrice: 218,
+        orderTypes: ['market', 'limit'],
+        lotSize: 1,
+        marketCap: '৳154B',
+        sector: 'Pharmaceuticals',
+        peRatio: 15.8,
+        expectedReturn: 15.0,
+    },
+    {
+        id: 'inst-eq-3',
+        name: 'BRAC Bank Ltd',
+        ticker: 'BRACBANK',
+        assetClass: 'equity',
+        issuer: 'Dhaka Stock Exchange',
+        partnerId: 'lankabangla',
+        description: 'Leading private bank focusing on SME lending. Strong digital banking push with bKash subsidiary.',
+        riskLevel: 'medium',
+        aiScore: 74,
+        aiSuitability: 'caution',
+        aiReason: 'Banking sector under margin pressure. NPL concerns but strong digital moat via bKash.',
+        minInvestment: 38,
+        currentPrice: 38.5,
+        orderTypes: ['market', 'limit'],
+        lotSize: 1,
+        marketCap: '৳62B',
+        sector: 'Banking',
+        peRatio: 8.2,
+        expectedReturn: 18.0,
+    },
+    // ── FIXED INCOME ──
+    {
+        id: 'inst-fi-1',
+        name: 'Treasury Bond 2030',
+        assetClass: 'fixed_income',
+        issuer: 'Bangladesh Bank',
+        partnerId: 'bbDealer',
+        description: 'Government treasury bond with sovereign guarantee. Interest paid semi-annually.',
+        riskLevel: 'low',
+        aiScore: 95,
+        aiSuitability: 'suitable',
+        aiReason: 'Risk-free sovereign bond. Ideal for capital preservation and steady income.',
+        minInvestment: 10000,
+        currentPrice: 10000,
+        couponRate: 8.75,
+        maturityDate: '2030-06-15',
+        faceValue: 10000,
+        expectedReturn: 8.75,
+    },
+    {
+        id: 'inst-fi-2',
+        name: 'GP Corporate Bond 2028',
+        assetClass: 'fixed_income',
+        issuer: 'Grameenphone Ltd',
+        partnerId: 'bbDealer',
+        description: 'AAA-rated corporate bond backed by GP\'s cash flows. Higher yield than treasury with minimal credit risk.',
+        riskLevel: 'low',
+        aiScore: 88,
+        aiSuitability: 'suitable',
+        aiReason: 'AAA-rated corporate with excellent credit profile. 85bps spread over treasury compensates for credit risk.',
+        minInvestment: 25000,
+        currentPrice: 25000,
+        couponRate: 9.6,
+        maturityDate: '2028-12-01',
+        faceValue: 25000,
+        expectedReturn: 9.6,
+    },
+    {
+        id: 'inst-fi-3',
+        name: 'Bangladesh Sukuk Al-Ijarah',
+        assetClass: 'fixed_income',
+        issuer: 'Bangladesh Bank',
+        partnerId: 'bbDealer',
+        description: 'Shariah-compliant government Sukuk instrument. Asset-backed with sovereign guarantee.',
+        riskLevel: 'low',
+        aiScore: 90,
+        aiSuitability: 'suitable',
+        aiReason: 'Sovereign-backed Shariah-compliant instrument. Ideal for investors seeking halal fixed-income.',
+        minInvestment: 10000,
+        currentPrice: 10000,
+        couponRate: 7.85,
+        maturityDate: '2029-03-30',
+        faceValue: 10000,
+        expectedReturn: 7.85,
+    },
+    // ── SAVINGS ──
+    {
+        id: 'inst-sv-1',
+        name: 'DBBL Fixed Deposit',
+        assetClass: 'savings',
+        issuer: 'Dutch Bangla Bank',
+        partnerId: 'dbbl',
+        description: 'Term deposit with guaranteed returns. Capital fully protected by deposit insurance up to BDT 200,000.',
+        riskLevel: 'low',
+        aiScore: 82,
+        aiSuitability: 'suitable',
+        aiReason: 'Capital-protected with 9.5% annual return. Suitable for emergency fund and low-risk allocation.',
+        minInvestment: 5000,
+        currentPrice: 5000,
+        tenureOptions: [1, 2, 3, 5],
+        interestRate: 9.5,
+        lockInDays: 365,
+        expectedReturn: 9.5,
+    },
+    {
+        id: 'inst-sv-2',
+        name: 'BRAC Bank DPS',
+        assetClass: 'savings',
+        issuer: 'BRAC Bank',
+        partnerId: 'bracBank',
+        description: 'Monthly deposit pension scheme. Disciplined savings with attractive maturity value.',
+        riskLevel: 'low',
+        aiScore: 78,
+        aiSuitability: 'suitable',
+        aiReason: 'Good for systematic savings habit. Monthly BDT 1,000+ contributions with 9.0% return.',
+        minInvestment: 1000,
+        currentPrice: 1000,
+        tenureOptions: [3, 5, 7, 10],
+        interestRate: 9.0,
+        lockInDays: 1095,
+        expectedReturn: 9.0,
+    },
+    {
+        id: 'inst-sv-3',
+        name: 'DBBL Digital Savings',
+        assetClass: 'savings',
+        issuer: 'Dutch Bangla Bank',
+        partnerId: 'dbbl',
+        description: 'Flexible digital savings with daily interest accrual. No lock-in period. Withdraw anytime.',
+        riskLevel: 'low',
+        aiScore: 75,
+        aiSuitability: 'suitable',
+        aiReason: 'Flexible savings with no lock-in. Good for parking idle funds while earning some return.',
+        minInvestment: 1000,
+        currentPrice: 1000,
+        tenureOptions: [],
+        interestRate: 5.5,
+        lockInDays: 0,
+        expectedReturn: 5.5,
+    },
+    // ── MUTUAL FUNDS ──
+    {
+        id: 'inst-mf-1',
+        name: 'ICB AMCL Growth Fund',
+        assetClass: 'mutual_fund',
+        issuer: 'ICB Asset Management',
+        partnerId: 'icb',
+        description: 'Open-end equity mutual fund investing in top DSE-listed companies. NAV updated daily.',
+        riskLevel: 'medium',
+        aiScore: 84,
+        aiSuitability: 'suitable',
+        aiReason: 'Well-diversified equity fund with 13.6% 1Y return. Low expense ratio of 2.1%.',
+        minInvestment: 1000,
+        currentPrice: 14.2,
+        navPrice: 14.2,
+        fundType: 'Equity Growth',
+        expenseRatio: 2.1,
+        exitLoad: 1.0,
+        expectedReturn: 13.6,
+    },
+    {
+        id: 'inst-mf-2',
+        name: 'AIMS Balanced Fund',
+        assetClass: 'mutual_fund',
+        issuer: 'AIMS Bangladesh',
+        partnerId: 'aims',
+        description: 'Balanced fund with 60% equity and 40% fixed income allocation. Lower volatility.',
+        riskLevel: 'low',
+        aiScore: 80,
+        aiSuitability: 'suitable',
+        aiReason: 'Balanced allocation reduces risk while capturing equity upside. Good starter fund.',
+        minInvestment: 1000,
+        currentPrice: 11.5,
+        navPrice: 11.5,
+        fundType: 'Balanced',
+        expenseRatio: 1.8,
+        exitLoad: 0.5,
+        expectedReturn: 8.5,
+    },
+    {
+        id: 'inst-mf-3',
+        name: 'ICB Shariah Fund',
+        assetClass: 'mutual_fund',
+        issuer: 'ICB Asset Management',
+        partnerId: 'icb',
+        description: 'Shariah-compliant equity fund investing only in halal-screened companies.',
+        riskLevel: 'medium',
+        aiScore: 79,
+        aiSuitability: 'suitable',
+        aiReason: 'Shariah-compliant with competitive returns. Limited sector coverage may reduce diversification.',
+        minInvestment: 1000,
+        currentPrice: 12.8,
+        navPrice: 12.8,
+        fundType: 'Shariah Equity',
+        expenseRatio: 2.3,
+        exitLoad: 1.0,
+        expectedReturn: 11.2,
+    },
+    // ── GOLD ──
+    {
+        id: 'inst-gd-1',
+        name: 'Digital Gold 24K',
+        assetClass: 'gold',
+        issuer: 'BD Gold Exchange',
+        partnerId: 'goldExchange',
+        description: '24-karat digital gold backed by physical vault storage. Buy from 0.01 grams. Instant settlement.',
+        riskLevel: 'low',
+        aiScore: 86,
+        aiSuitability: 'suitable',
+        aiReason: 'Inflation hedge with zero storage cost. Gold at 5-year high — suitable for 5-10% portfolio allocation.',
+        minInvestment: 100,
+        currentPrice: 9450,
+        spotPrice: 9450,
+        minGrams: 0.01,
+        purity: '24K (99.9%)',
+        expectedReturn: 8.0,
+    },
+    {
+        id: 'inst-gd-2',
+        name: 'Digital Gold 22K',
+        assetClass: 'gold',
+        issuer: 'BD Gold Exchange',
+        partnerId: 'goldExchange',
+        description: '22-karat digital gold. Lower price point, same security. Backed by physical vaults.',
+        riskLevel: 'low',
+        aiScore: 82,
+        aiSuitability: 'suitable',
+        aiReason: 'Budget-friendly gold option. Good entry point for small investors wanting gold exposure.',
+        minInvestment: 100,
+        currentPrice: 8750,
+        spotPrice: 8750,
+        minGrams: 0.01,
+        purity: '22K (91.6%)',
+        expectedReturn: 7.5,
+    },
+    // ── AGRI-FINTECH ──
+    {
+        id: 'inst-ag-1',
+        name: 'iFarmer Rice Campaign — Boro 2026',
+        assetClass: 'agri',
+        issuer: 'iFarmer',
+        partnerId: 'ifarmer',
+        description: 'Invest in Boro rice cultivation across Rangpur. Structured return at harvest with crop insurance.',
+        riskLevel: 'high',
+        aiScore: 72,
+        aiSuitability: 'caution',
+        aiReason: 'High return potential but weather-dependent. Mitigated by crop insurance. Lock-in until harvest.',
+        minInvestment: 5000,
+        currentPrice: 5000,
+        campaignName: 'Boro Rice 2026 — Rangpur',
+        campaignEndDate: '2026-03-15',
+        harvestDate: '2026-07-30',
+        targetYield: 14.0,
+        funded: 72,
+        expectedReturn: 14.0,
+    },
+    {
+        id: 'inst-ag-2',
+        name: 'iFarmer Shrimp Export — Cox\'s Bazar',
+        assetClass: 'agri',
+        issuer: 'iFarmer',
+        partnerId: 'ifarmer',
+        description: 'Export-grade shrimp cultivation in Cox\'s Bazar. Dollar-linked returns from export proceeds.',
+        riskLevel: 'high',
+        aiScore: 68,
+        aiSuitability: 'caution',
+        aiReason: 'Export-linked currency upside but disease risk in aquaculture. Lock-in 6 months.',
+        minInvestment: 10000,
+        currentPrice: 10000,
+        campaignName: 'Shrimp Export Q2 2026',
+        campaignEndDate: '2026-04-01',
+        harvestDate: '2026-09-15',
+        targetYield: 16.5,
+        funded: 45,
+        expectedReturn: 16.5,
+    },
+    {
+        id: 'inst-ag-3',
+        name: 'iFarmer Mango Season — Rajshahi',
+        assetClass: 'agri',
+        issuer: 'iFarmer',
+        partnerId: 'ifarmer',
+        description: 'Premium Rajshahi mango cultivation. Short 4-month cycle with strong domestic demand.',
+        riskLevel: 'medium',
+        aiScore: 76,
+        aiSuitability: 'suitable',
+        aiReason: 'Short cycle reduces risk. Mango has strong domestic demand. Good entry for agri exposure.',
+        minInvestment: 3000,
+        currentPrice: 3000,
+        campaignName: 'Rajshahi Mango 2026',
+        campaignEndDate: '2026-03-01',
+        harvestDate: '2026-06-30',
+        targetYield: 12.0,
+        funded: 88,
+        expectedReturn: 12.0,
+    },
+]
